@@ -8,9 +8,33 @@
 <title>Mi Presupuesto</title>
 <style>
 :root{--bg:#f4f6f8;--card:#fff;--ink:#111827;--muted:#6b7280;--line:#e5e7eb;--accent:#111827;--green:#15803d;--red:#b91c1c}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;color:var(--ink)}
-.app{max-width:680px;margin:auto;padding:18px 16px 90px}.top{display:flex;justify-content:space-between;align-items:center;margin:8px 0 18px}.title{font-size:28px;font-weight:800}.date{color:var(--muted);font-size:13px}
-.card{background:var(--card);border-radius:20px;padding:18px;margin:12px 0;box-shadow:0 3px 16px #0000000b}.hero{background:#111827;color:#fff}.hero .muted{color:#cbd5e1}.balance{font-size:40px;font-weight:800;margin:5px 0 15px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.mini{padding:14px;border:1px solid var(--line);border-radius:15px}.label{font-size:12px;color:var(--muted)}.hero .label{color:#cbd5e1}.value{font-size:20px;font-weight:750;margin-top:5px}.green{color:var(--green)}.red{color:var(--red)}button{border:0;border-radius:14px;padding:13px 16px;font-weight:700;background:#111827;color:#fff;font-size:15px}button.secondary{background:#eef0f3;color:#111827}.actions{display:flex;gap:10px;margin-top:10px}button{flex:1}.section-title{font-size:18px;font-weight:800;margin-bottom:12px}.row{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--line)}.row:last-child{border-bottom:0}.empty{color:var(--muted);padding:12px 0}.modal{position:fixed;inset:0;background:#0008;display:none;align-items:end;z-index:10}.sheet{background:#fff;border-radius:24px 24px 0 0;padding:20px;width:100%;max-width:680px;margin:auto}.sheet h2{margin-top:0}input,select{width:100%;padding:14px;border:1px solid var(--line);border-radius:12px;font-size:16px;margin:7px 0 12px}.nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--line);padding:10px 16px;display:flex;justify-content:center;z-index:5}.nav span{font-size:12px;color:var(--muted)}.small{font-size:12px;color:var(--muted);line-height:1.4}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;color:var(--ink)}
+.app{max-width:680px;margin:auto;padding:18px 16px 90px}
+.top{display:flex;justify-content:space-between;align-items:center;margin:8px 0 18px}
+.title{font-size:28px;font-weight:800}.date{color:var(--muted);font-size:13px}
+.card{background:var(--card);border-radius:20px;padding:18px;margin:12px 0;box-shadow:0 3px 16px #0000000b}
+.hero{background:#111827;color:#fff}.hero .muted{color:#cbd5e1}
+.balance{font-size:40px;font-weight:800;margin:5px 0 15px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mini{padding:14px;border:1px solid var(--line);border-radius:15px}
+.label{font-size:12px;color:var(--muted)}.hero .label{color:#cbd5e1}
+.value{font-size:20px;font-weight:750;margin-top:5px}.green{color:var(--green)}.red{color:var(--red)}
+button{border:0;border-radius:14px;padding:13px 16px;font-weight:700;background:#111827;color:#fff;font-size:15px}
+button.secondary{background:#eef0f3;color:#111827}.actions{display:flex;gap:10px;margin-top:10px}button{flex:1}
+.section-title{font-size:18px;font-weight:800;margin-bottom:12px}
+.row{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--line)}
+.row:last-child{border-bottom:0}.empty{color:var(--muted);padding:12px 0}
+.modal{position:fixed;inset:0;background:#0008;display:none;align-items:flex-start;z-index:10;overflow-y:auto;padding:20px 0}
+.sheet{background:#fff;border-radius:24px;padding:20px;width:100%;max-width:680px;margin:auto;max-height:calc(100vh - 40px);overflow-y:auto}
+.sheet h2{margin-top:0}
+input,select{width:100%;padding:14px;border:1px solid var(--line);border-radius:12px;font-size:16px;margin:7px 0 12px}
+.nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--line);padding:10px 16px;display:flex;justify-content:center;z-index:5}
+.nav span{font-size:12px;color:var(--muted)}.small{font-size:12px;color:var(--muted);line-height:1.4}
+.fixed-editor-row{display:grid;grid-template-columns:1fr 1fr 90px auto;gap:8px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.fixed-editor-row input{margin:0;min-width:0}
+.fixed-editor-row button{flex:0 0 auto;padding:10px}
+@media(max-width:480px){.fixed-editor-row{grid-template-columns:1fr 1fr 70px}.fixed-editor-row button{grid-column:1/-1}}
 </style>
 </head>
 <body>
@@ -77,9 +101,10 @@
 
 <script>
 const KEY="miPresupuesto_v1";
+const START_DATE="2026-10-01";
 let data=JSON.parse(localStorage.getItem(KEY)||'null')||{
  initialBalance:0,savingGoal:0,
- fixed:[{name:"Renta",amount:0,day:1},{name:"Teléfono",amount:0,day:1}],
+ fixed:[{name:"Renta",amount:1100,day:1},{name:"Teléfono",amount:40,day:5}],
  transactions:[]
 };
 let modalType="expense";
@@ -94,14 +119,23 @@ function monthKey(s){return s.slice(0,7)}
 function save(){localStorage.setItem(KEY,JSON.stringify(data))}
 function today(){let d=new Date(); return iso(d)}
 function render(){
+ let now=today();
  document.getElementById("today").textContent=new Intl.DateTimeFormat('es-US',{dateStyle:'long'}).format(new Date());
- let tx=data.transactions, m=monthKey(today());
+ let tx=data.transactions;
+ let m=monthKey(now);
  let inc=tx.filter(x=>x.type==="income"&&monthKey(x.date)===m).reduce((a,x)=>a+x.amount,0);
  let exp=tx.filter(x=>x.type==="expense"&&monthKey(x.date)===m).reduce((a,x)=>a+x.amount,0);
- let balance=data.initialBalance+tx.reduce((a,x)=>a+(x.type==="income"?x.amount:-x.amount),0);
+
+ let balance;
+ if(now < START_DATE){
+   balance=0;
+ } else {
+   balance=data.initialBalance+tx.reduce((a,x)=>a+(x.type==="income"?x.amount:-x.amount),0);
+ }
  document.getElementById("balance").textContent=money(balance);
  document.getElementById("income").textContent=money(inc);
  document.getElementById("expense").textContent=money(exp);
+
  let d=new Date(), day=d.getDay(), friday=new Date(d); friday.setDate(d.getDate()-((day+2)%7));
  let thursday=new Date(friday); thursday.setDate(friday.getDate()+6);
  document.getElementById("weekRange").textContent=friday.toLocaleDateString('es-US',{month:'short',day:'numeric'})+" – "+thursday.toLocaleDateString('es-US',{month:'short',day:'numeric'});
@@ -111,8 +145,10 @@ function render(){
  let remaining=Math.max(1,Math.ceil((thursday-d)/(86400000))+1);
  document.getElementById("daily").textContent=money(available/remaining);
  document.getElementById("forecast").textContent=`Gastos de esta semana: ${money(weekExp)} · Gastos fijos reservados: ${money(data.fixed.reduce((a,x)=>a+x.amount,0))} · Ahorro objetivo: ${money(data.savingGoal)}`;
+
  let fl=document.getElementById("fixedList");
  fl.innerHTML=data.fixed.length?data.fixed.map(x=>`<div class="row"><span>🏦 ${x.name}<br><span class="small">Día ${x.day}</span></span><b>${money(x.amount)}</b></div>`).join(""):'<div class="empty">No has añadido gastos fijos.</div>';
+
  let recent=[...tx].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,8);
  document.getElementById("transactions").innerHTML=recent.length?recent.map(x=>`<div class="row"><span>${x.type==="income"?"💵":"💸"} ${x.category}<br><span class="small">${x.date}${x.desc?" · "+x.desc:""}</span></span><b class="${x.type==="income"?"green":"red"}">${x.type==="income"?"+":"−"}${money(x.amount)}</b></div>`).join(""):'<div class="empty">Aún no hay movimientos.</div>';
 }
@@ -137,16 +173,16 @@ function openSettings(){
 }
 function closeSettings(){document.getElementById("settings").style.display="none"}
 function renderFixedEditor(){
- document.getElementById("fixedEditor").innerHTML=data.fixed.map((x,i)=>`<div class="row"><span style="flex:1"><input data-i="${i}" class="fn" value="${x.name}" placeholder="Nombre"><input data-i="${i}" class="fa" type="number" step="0.01" value="${x.amount}"><input data-i="${i}" class="fd" type="number" min="1" max="31" value="${x.day}"></span><button class="secondary" style="flex:0 0 auto" onclick="removeFixed(${i})">Eliminar</button></div>`).join("");
+ document.getElementById("fixedEditor").innerHTML=data.fixed.map((x,i)=>`<div class="fixed-editor-row"><input data-i="${i}" class="fn" value="${x.name}" placeholder="Nombre"><input data-i="${i}" class="fa" type="number" step="0.01" value="${x.amount}"><input data-i="${i}" class="fd" type="number" min="1" max="31" value="${x.day}"><button class="secondary" onclick="removeFixed(${i})">Eliminar</button></div>`).join("");
 }
 function addFixed(){data.fixed.push({name:"Nuevo gasto",amount:0,day:1});renderFixedEditor()}
 function removeFixed(i){data.fixed.splice(i,1);renderFixedEditor()}
 function saveSettings(){
  data.initialBalance=Number(document.getElementById("initialBalance").value)||0;
  data.savingGoal=Number(document.getElementById("savingGoal").value)||0;
- [...document.querySelectorAll(".fn")].forEach((e,i)=>data.fixed[i].name=e.value||"Gasto fijo");
- [...document.querySelectorAll(".fa")].forEach((e,i)=>data.fixed[i].amount=Number(e.value)||0);
- [...document.querySelectorAll(".fd")].forEach((e,i)=>data.fixed[i].day=Number(e.value)||1);
+ [...document.querySelectorAll(".fn")].forEach((e,i)=>{if(data.fixed[i])data.fixed[i].name=e.value||"Gasto fijo"});
+ [...document.querySelectorAll(".fa")].forEach((e,i)=>{if(data.fixed[i])data.fixed[i].amount=Number(e.value)||0});
+ [...document.querySelectorAll(".fd")].forEach((e,i)=>{if(data.fixed[i])data.fixed[i].day=Number(e.value)||1});
  save();closeSettings();render();
 }
 render();
