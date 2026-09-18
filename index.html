@@ -64,6 +64,15 @@ input,select{width:100%;padding:14px;border:1px solid var(--line);border-radius:
   </div>
 
   <div class="card">
+    <div class="section-title">Ahorro acumulado</div>
+    <div class="grid">
+      <div class="mini"><div class="label">Acumulado</div><div class="value green" id="savedTotal">$0.00</div></div>
+      <div class="mini"><div class="label">Este mes</div><div class="value" id="savedMonth">$0.00</div></div>
+    </div>
+    <p class="small" id="savingProgress">Meta mensual: $200.00</p>
+  </div>
+
+  <div class="card">
     <div class="section-title">Próximos compromisos</div>
     <div id="fixedList"></div>
   </div>
@@ -103,7 +112,7 @@ input,select{width:100%;padding:14px;border:1px solid var(--line);border-radius:
 const KEY="miPresupuesto_v1";
 const START_DATE="2026-10-01";
 let data=JSON.parse(localStorage.getItem(KEY)||'null')||{
- initialBalance:0,savingGoal:0,
+ initialBalance:0,savingGoal:200,
  fixed:[{name:"Renta",amount:1100,day:1},{name:"Teléfono",amount:40,day:5}],
  transactions:[]
 };
@@ -118,13 +127,42 @@ function parse(s){return new Date(s+"T12:00:00")}
 function monthKey(s){return s.slice(0,7)}
 function save(){localStorage.setItem(KEY,JSON.stringify(data))}
 function today(){let d=new Date(); return iso(d)}
+
+function ensureMonthlySaving(){
+  const now=today();
+  if(now < START_DATE || !(Number(data.savingGoal)>0)) return;
+  const currentMonth=monthKey(now);
+  const alreadySaved=data.transactions.some(x =>
+    x.type==="expense" && x.category==="Ahorro" && monthKey(x.date)===currentMonth && x.autoSaving===true
+  );
+  if(!alreadySaved){
+    data.transactions.push({
+      id:"auto-saving-"+currentMonth,
+      type:"expense",
+      amount:Number(data.savingGoal),
+      category:"Ahorro",
+      date:currentMonth+"-01",
+      desc:"Ahorro mensual automático",
+      autoSaving:true
+    });
+    save();
+  }
+}
+
 function render(){
+ ensureMonthlySaving();
  let now=today();
  document.getElementById("today").textContent=new Intl.DateTimeFormat('es-US',{dateStyle:'long'}).format(new Date());
  let tx=data.transactions;
  let m=monthKey(now);
  let inc=tx.filter(x=>x.type==="income"&&monthKey(x.date)===m).reduce((a,x)=>a+x.amount,0);
  let exp=tx.filter(x=>x.type==="expense"&&monthKey(x.date)===m).reduce((a,x)=>a+x.amount,0);
+
+ let savedTotal=tx.filter(x=>x.type==="expense"&&x.category==="Ahorro").reduce((a,x)=>a+x.amount,0);
+ let savedMonth=tx.filter(x=>x.type==="expense"&&x.category==="Ahorro"&&monthKey(x.date)===m).reduce((a,x)=>a+x.amount,0);
+ document.getElementById("savedTotal").textContent=money(savedTotal);
+ document.getElementById("savedMonth").textContent=money(savedMonth);
+ document.getElementById("savingProgress").textContent=`Meta mensual: ${money(data.savingGoal)} · Acumulado: ${money(savedTotal)}`;
 
  let balance;
  if(now < START_DATE){
@@ -140,7 +178,7 @@ function render(){
  let thursday=new Date(friday); thursday.setDate(friday.getDate()+6);
  document.getElementById("weekRange").textContent=friday.toLocaleDateString('es-US',{month:'short',day:'numeric'})+" – "+thursday.toLocaleDateString('es-US',{month:'short',day:'numeric'});
  let weekExp=tx.filter(x=>x.type==="expense"&&parse(x.date)>=friday&&parse(x.date)<=thursday).reduce((a,x)=>a+x.amount,0);
- let reserved=data.fixed.reduce((a,x)=>a+x.amount,0)+data.savingGoal;
+ let reserved=data.fixed.reduce((a,x)=>a+x.amount,0);
  let available=Math.max(0,balance-reserved);
  let remaining=Math.max(1,Math.ceil((thursday-d)/(86400000))+1);
  document.getElementById("daily").textContent=money(available/remaining);
@@ -168,7 +206,7 @@ function saveMovement(){
 function openSettings(){
  document.getElementById("settings").style.display="flex";
  document.getElementById("initialBalance").value=data.initialBalance||0;
- document.getElementById("savingGoal").value=data.savingGoal||0;
+ document.getElementById("savingGoal").value=data.savingGoal||200;
  renderFixedEditor();
 }
 function closeSettings(){document.getElementById("settings").style.display="none"}
