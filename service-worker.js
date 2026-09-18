@@ -1,11 +1,9 @@
-// Mi Presupuesto - Service Worker
-const CACHE_NAME = "mi-presupuesto-v2";
+const CACHE_NAME = "mi-presupuesto-v3";
 
 const ASSETS = [
   "./",
   "./index.html",
-  "./manifest.json",
-  "./service-worker.js"
+  "./manifest.json"
 ];
 
 self.addEventListener("install", (event) => {
@@ -18,38 +16,54 @@ self.addEventListener("install", (event) => {
 
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(
-        keys
-          .filter((key) => key !== CACHE_NAME)
-          .map((key) => caches.delete(key))
+    caches.keys()
+      .then((keys) =>
+        Promise.all(
+          keys
+            .filter((key) => key !== CACHE_NAME)
+            .map((key) => caches.delete(key))
+        )
       )
-    ).then(() => self.clients.claim())
+      .then(() => self.clients.claim())
   );
 });
 
 self.addEventListener("fetch", (event) => {
-  if (event.request.method !== "GET") return;
+  const request = event.request;
 
-  event.respondWith(
-    caches.match(event.request).then((cached) => {
-      if (cached) return cached;
-
-      return fetch(event.request)
+  if (
+    request.mode === "navigate" ||
+    new URL(request.url).pathname.endsWith("/index.html")
+  ) {
+    event.respondWith(
+      fetch(request)
         .then((response) => {
-          if (!response || response.status !== 200 || response.type === "opaque") {
-            return response;
+          if (response && response.ok) {
+            const copy = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
           }
-
-          const copy = response.clone();
-
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, copy);
-          });
-
           return response;
         })
-        .catch(() => caches.match("./index.html"));
+        .catch(() =>
+          caches.match(request).then(
+            (cached) => cached || caches.match("./index.html")
+          )
+        )
+    );
+    return;
+  }
+
+  event.respondWith(
+    caches.match(request).then((cached) => {
+      if (cached) return cached;
+
+      return fetch(request).then((response) => {
+        if (response && response.ok) {
+          const copy = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
+        }
+        return response;
+      });
     })
   );
 });
