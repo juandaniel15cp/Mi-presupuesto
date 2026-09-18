@@ -70,6 +70,9 @@ input,select{width:100%;padding:14px;border:1px solid var(--line);border-radius:
       <div class="mini"><div class="label">Este mes</div><div class="value" id="savedMonth">$0.00</div></div>
     </div>
     <p class="small" id="savingProgress">Meta mensual: $200.00</p>
+    <div class="actions">
+      <button class="secondary" onclick="withdrawSavings()">↩ Retirar ahorro</button>
+    </div>
   </div>
 
   <div class="card">
@@ -119,7 +122,7 @@ let data=JSON.parse(localStorage.getItem(KEY)||'null')||{
 let modalType="expense";
 
 const expenseCats=["Renta","Comida","Transporte","Teléfono","Mercado","Entretenimiento","Compras","Ahorro","Otros"];
-const incomeCats=["Trabajo","Ingreso extra","Otro"];
+const incomeCats=["Trabajo","Ingreso extra","Retiro de ahorro","Otro"];
 
 function money(n){return new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(n||0)}
 function iso(d){return d.toISOString().slice(0,10)}
@@ -158,8 +161,12 @@ function render(){
  let inc=tx.filter(x=>x.type==="income"&&monthKey(x.date)===m).reduce((a,x)=>a+x.amount,0);
  let exp=tx.filter(x=>x.type==="expense"&&monthKey(x.date)===m).reduce((a,x)=>a+x.amount,0);
 
- let savedTotal=tx.filter(x=>x.type==="expense"&&x.category==="Ahorro").reduce((a,x)=>a+x.amount,0);
- let savedMonth=tx.filter(x=>x.type==="expense"&&x.category==="Ahorro"&&monthKey(x.date)===m).reduce((a,x)=>a+x.amount,0);
+ let savedIn=tx.filter(x=>x.category==="Ahorro"&&x.type==="expense").reduce((a,x)=>a+x.amount,0);
+ let savedOut=tx.filter(x=>x.category==="Retiro de ahorro"&&x.type==="income").reduce((a,x)=>a+x.amount,0);
+ let savedTotal=Math.max(0,savedIn-savedOut);
+ let savedMonthIn=tx.filter(x=>x.category==="Ahorro"&&x.type==="expense"&&monthKey(x.date)===m).reduce((a,x)=>a+x.amount,0);
+ let savedMonthOut=tx.filter(x=>x.category==="Retiro de ahorro"&&x.type==="income"&&monthKey(x.date)===m).reduce((a,x)=>a+x.amount,0);
+ let savedMonth=Math.max(0,savedMonthIn-savedMonthOut);
  document.getElementById("savedTotal").textContent=money(savedTotal);
  document.getElementById("savedMonth").textContent=money(savedMonth);
  document.getElementById("savingProgress").textContent=`Meta mensual: ${money(data.savingGoal)} · Acumulado: ${money(savedTotal)}`;
@@ -190,6 +197,38 @@ function render(){
  let recent=[...tx].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,8);
  document.getElementById("transactions").innerHTML=recent.length?recent.map(x=>`<div class="row"><span>${x.type==="income"?"💵":"💸"} ${x.category}<br><span class="small">${x.date}${x.desc?" · "+x.desc:""}</span></span><b class="${x.type==="income"?"green":"red"}">${x.type==="income"?"+":"−"}${money(x.amount)}</b></div>`).join(""):'<div class="empty">Aún no hay movimientos.</div>';
 }
+function withdrawSavings(){
+  const tx=data.transactions||[];
+  const savedIn=tx.filter(x=>x.category==="Ahorro"&&x.type==="expense").reduce((a,x)=>a+x.amount,0);
+  const savedOut=tx.filter(x=>x.category==="Retiro de ahorro"&&x.type==="income").reduce((a,x)=>a+x.amount,0);
+  const currentSavings=Math.max(0,savedIn-savedOut);
+  if(currentSavings<=0){
+    alert("No tienes ahorro acumulado para retirar.");
+    return;
+  }
+  const raw=prompt(`Tienes ${money(currentSavings)} ahorrados. ¿Cuánto quieres retirar?`);
+  if(raw===null) return;
+  const amount=Number(raw);
+  if(!Number.isFinite(amount)||amount<=0){
+    alert("Introduce un monto válido.");
+    return;
+  }
+  if(amount>currentSavings){
+    alert(`No puedes retirar más de ${money(currentSavings)}.`);
+    return;
+  }
+  data.transactions.push({
+    id:"saving-withdrawal-"+Date.now(),
+    type:"income",
+    amount,
+    category:"Retiro de ahorro",
+    date:today(),
+    desc:"Retiro de ahorro"
+  });
+  save();
+  render();
+}
+
 function openModal(type){
  modalType=type; document.getElementById("modal").style.display="flex";
  document.getElementById("modalTitle").textContent=type==="income"?"Registrar ingreso":"Registrar gasto";
