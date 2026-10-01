@@ -6,243 +6,35 @@
 <meta name="theme-color" content="#111827">
 <link rel="manifest" href="manifest.json">
 <title>Mi Presupuesto</title>
-
 <style>
-:root{
-  --bg:#f4f6f8;
-  --card:#fff;
-  --ink:#111827;
-  --muted:#6b7280;
-  --line:#e5e7eb;
-  --accent:#111827;
-  --green:#15803d;
-  --red:#b91c1c
-}
-
+:root{--bg:#f4f6f8;--card:#fff;--ink:#111827;--muted:#6b7280;--line:#e5e7eb;--accent:#111827;--green:#15803d;--red:#b91c1c}
 *{box-sizing:border-box}
-
-body{
-  margin:0;
-  background:var(--bg);
-  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;
-  color:var(--ink)
-}
-
-.app{
-  max-width:680px;
-  margin:auto;
-  padding:18px 16px 90px
-}
-
-.top{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin:8px 0 18px
-}
-
-.title{
-  font-size:28px;
-  font-weight:800
-}
-
-.date{
-  color:var(--muted);
-  font-size:13px
-}
-
-.card{
-  background:var(--card);
-  border-radius:20px;
-  padding:18px;
-  margin:12px 0;
-  box-shadow:0 3px 16px #0000000b
-}
-
-.hero{
-  background:#111827;
-  color:#fff
-}
-
-.hero .muted{
-  color:#cbd5e1
-}
-
-.balance{
-  font-size:40px;
-  font-weight:800;
-  margin:5px 0 15px
-}
-
-.grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px
-}
-
-.mini{
-  padding:14px;
-  border:1px solid var(--line);
-  border-radius:15px
-}
-
-.label{
-  font-size:12px;
-  color:var(--muted)
-}
-
-.hero .label{
-  color:#cbd5e1
-}
-
-.value{
-  font-size:20px;
-  font-weight:750;
-  margin-top:5px
-}
-
-.green{
-  color:var(--green)
-}
-
-.red{
-  color:var(--red)
-}
-
-button{
-  border:0;
-  border-radius:14px;
-  padding:13px 16px;
-  font-weight:700;
-  background:#111827;
-  color:#fff;
-  font-size:15px
-}
-
-button.secondary{
-  background:#eef0f3;
-  color:#111827
-}
-
-.actions{
-  display:flex;
-  gap:10px;
-  margin-top:10px
-}
-
-button{
-  flex:1
-}
-
-.section-title{
-  font-size:18px;
-  font-weight:800;
-  margin-bottom:12px
-}
-
-.row{
-  display:flex;
-  justify-content:space-between;
-  padding:12px 0;
-  border-bottom:1px solid var(--line)
-}
-
-.row:last-child{
-  border-bottom:0
-}
-
-.empty{
-  color:var(--muted);
-  padding:12px 0
-}
-
-.modal{
-  position:fixed;
-  inset:0;
-  background:#0008;
-  display:none;
-  align-items:flex-start;
-  z-index:10;
-  overflow-y:auto;
-  padding:20px 0
-}
-
-.sheet{
-  background:#fff;
-  border-radius:24px;
-  padding:20px;
-  width:100%;
-  max-width:680px;
-  margin:auto;
-  max-height:calc(100vh - 40px);
-  overflow-y:auto
-}
-
-.sheet h2{
-  margin-top:0
-}
-
-input,select{
-  width:100%;
-  padding:14px;
-  border:1px solid var(--line);
-  border-radius:12px;
-  font-size:16px;
-  margin:7px 0 12px
-}
-
-.nav{
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  background:#fff;
-  border-top:1px solid var(--line);
-  padding:10px 16px;
-  display:flex;
-  justify-content:center;
-  z-index:5
-}
-
-.nav span{
-  font-size:12px;
-  color:var(--muted)
-}
-
-.small{
-  font-size:12px;
-  color:var(--muted);
-  line-height:1.4
-}
-
-.fixed-editor-row{
-  display:grid;
-  grid-template-columns:1fr 1fr 90px auto;
-  gap:8px;
-  align-items:center;
-  padding:10px 0;
-  border-bottom:1px solid var(--line)
-}
-
-.fixed-editor-row input{
-  margin:0;
-  min-width:0
-}
-
-.fixed-editor-row button{
-  flex:0 0 auto;
-  padding:10px
-}
-
-@media(max-width:480px){
-  .fixed-editor-row{
-    grid-template-columns:1fr 1fr 70px
-  }
-
-  .fixed-editor-row button{
-    grid-column:1/-1
-  }
-}
+body{margin:0;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;color:var(--ink)}
+.app{max-width:680px;margin:auto;padding:18px 16px 90px}
+.top{display:flex;justify-content:space-between;align-items:center;margin:8px 0 18px}
+.title{font-size:28px;font-weight:800}.date{color:var(--muted);font-size:13px}
+.card{background:var(--card);border-radius:20px;padding:18px;margin:12px 0;box-shadow:0 3px 16px #0000000b}
+.hero{background:#111827;color:#fff}.hero .muted{color:#cbd5e1}
+.balance{font-size:40px;font-weight:800;margin:5px 0 15px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mini{padding:14px;border:1px solid var(--line);border-radius:15px}
+.label{font-size:12px;color:var(--muted)}.hero .label{color:#cbd5e1}
+.value{font-size:20px;font-weight:750;margin-top:5px}.green{color:var(--green)}.red{color:var(--red)}
+button{border:0;border-radius:14px;padding:13px 16px;font-weight:700;background:#111827;color:#fff;font-size:15px}
+button.secondary{background:#eef0f3;color:#111827}.actions{display:flex;gap:10px;margin-top:10px}button{flex:1}
+.section-title{font-size:18px;font-weight:800;margin-bottom:12px}
+.row{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--line)}
+.row:last-child{border-bottom:0}.empty{color:var(--muted);padding:12px 0}
+.modal{position:fixed;inset:0;background:#0008;display:none;align-items:flex-start;z-index:10;overflow-y:auto;padding:20px 0}
+.sheet{background:#fff;border-radius:24px;padding:20px;width:100%;max-width:680px;margin:auto;max-height:calc(100vh - 40px);overflow-y:auto}
+.sheet h2{margin-top:0}
+input,select{width:100%;padding:14px;border:1px solid var(--line);border-radius:12px;font-size:16px;margin:7px 0 12px}
+.nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--line);padding:10px 16px;display:flex;justify-content:center;z-index:5}
+.nav span{font-size:12px;color:var(--muted)}.small{font-size:12px;color:var(--muted);line-height:1.4}
+.fixed-editor-row{display:grid;grid-template-columns:1fr 1fr 90px auto;gap:8px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.fixed-editor-row input{margin:0;min-width:0}
+.fixed-editor-row button{flex:0 0 auto;padding:10px}
+@media(max-width:480px){.fixed-editor-row{grid-template-columns:1fr 1fr 70px}.fixed-editor-row button{grid-column:1/-1}}
 </style>
 </head>
 
@@ -255,349 +47,155 @@ input,select{
       <div class="title">Mi Presupuesto</div>
       <div class="date" id="today"></div>
     </div>
-
     <button class="secondary" onclick="openSettings()">⚙️</button>
   </div>
 
-
-  <!-- SALDO PRINCIPAL -->
-
   <div class="card hero">
-
-    <div class="label">
-      Saldo disponible
-    </div>
-
-    <div class="balance" id="balance">
-      $0.00
-    </div>
+    <div class="label">Saldo disponible</div>
+    <div class="balance" id="balance">$0.00</div>
 
     <div class="grid">
-
       <div>
-        <div class="label">
-          Ingresos del mes
-        </div>
-
-        <div class="value" id="income">
-          $0.00
-        </div>
+        <div class="label">Ingresos del mes</div>
+        <div class="value" id="income">$0.00</div>
       </div>
 
       <div>
-        <div class="label">
-          Gastos del mes
-        </div>
-
-        <div class="value" id="expense">
-          $0.00
-        </div>
+        <div class="label">Gastos del mes</div>
+        <div class="value" id="expense">$0.00</div>
       </div>
-
     </div>
 
     <div class="actions">
-
-      <button onclick="openModal('income')">
-        ＋ Ingreso
-      </button>
-
-      <button onclick="openModal('expense')">
-        ＋ Gasto
-      </button>
-
+      <button onclick="openModal('income')">＋ Ingreso</button>
+      <button onclick="openModal('expense')">＋ Gasto</button>
     </div>
-
   </div>
 
-
-  <!-- ESTA SEMANA -->
-
   <div class="card">
-
-    <div class="section-title">
-      Esta semana
-    </div>
+    <div class="section-title">Esta semana</div>
 
     <div class="grid">
-
       <div class="mini">
-
-        <div class="label">
-          Semana
-        </div>
-
-        <div class="value" id="weekRange">
-          —
-        </div>
-
+        <div class="label">Semana</div>
+        <div class="value" id="weekRange">—</div>
       </div>
 
       <div class="mini">
-
-        <div class="label">
-          Puedes gastar hoy
-        </div>
-
-        <div class="value green" id="daily">
-          $0.00
-        </div>
-
+        <div class="label">Puedes gastar hoy</div>
+        <div class="value green" id="daily">$0.00</div>
       </div>
-
     </div>
 
     <p class="small" id="forecast"></p>
-
   </div>
 
-
-  <!-- BOLSILLO DE AHORRO -->
-
   <div class="card">
-
-    <div class="section-title">
-      Bolsillo ahorro
-    </div>
+    <div class="section-title">Bolsillo ahorro</div>
 
     <div class="grid">
-
       <div class="mini">
-
-        <div class="label">
-          Disponible
-        </div>
-
-        <div class="value green" id="savedTotal">
-          $0.00
-        </div>
-
+        <div class="label">Disponible</div>
+        <div class="value green" id="savedTotal">$0.00</div>
       </div>
 
       <div class="mini">
-
-        <div class="label">
-          Este mes
-        </div>
-
-        <div class="value" id="savedMonth">
-          $0.00
-        </div>
-
+        <div class="label">Este mes</div>
+        <div class="value" id="savedMonth">$0.00</div>
       </div>
-
     </div>
 
     <div class="actions">
-
-      <button
-        class="secondary"
-        onclick="withdrawSavings()"
-      >
-        ↩ Retirar ahorro
-      </button>
-
+      <button class="secondary" onclick="withdrawSavings()">↩ Retirar ahorro</button>
     </div>
-
   </div>
 
-
-  <!-- GASTOS FIJOS -->
-
   <div class="card">
-
-    <div class="section-title">
-      Próximos compromisos
-    </div>
-
+    <div class="section-title">Próximos compromisos</div>
     <div id="fixedList"></div>
-
   </div>
 
-
-  <!-- MOVIMIENTOS -->
-
   <div class="card">
-
-    <div class="section-title">
-      Movimientos recientes
-    </div>
-
+    <div class="section-title">Movimientos recientes</div>
     <div id="transactions"></div>
-
   </div>
 
 </div>
-
 
 <div class="nav">
-
-  <span>
-    🏠 Inicio · Los datos se guardan en este dispositivo
-  </span>
-
+  <span>🏠 Inicio · Los datos se guardan en este dispositivo</span>
 </div>
-
-
-<!-- MODAL MOVIMIENTO -->
 
 <div class="modal" id="modal">
 
   <div class="sheet">
 
-    <h2 id="modalTitle">
-      Nuevo movimiento
-    </h2>
+    <h2 id="modalTitle">Nuevo movimiento</h2>
 
-    <label>
-      Monto
-    </label>
+    <label>Monto</label>
+    <input id="amount" type="number" min="0" step="0.01" placeholder="0.00">
 
-    <input
-      id="amount"
-      type="number"
-      min="0"
-      step="0.01"
-      placeholder="0.00"
-    >
-
-    <label>
-      Categoría
-    </label>
-
+    <label>Categoría</label>
     <select id="category"></select>
 
-    <label>
-      Fecha
-    </label>
+    <label>Fecha</label>
+    <input id="date" type="date">
 
-    <input
-      id="date"
-      type="date"
-    >
-
-    <label>
-      Descripción
-    </label>
-
-    <input
-      id="desc"
-      placeholder="Opcional"
-    >
+    <label>Descripción</label>
+    <input id="desc" placeholder="Opcional">
 
     <div class="actions">
-
-      <button
-        class="secondary"
-        onclick="closeModal()"
-      >
-        Cancelar
-      </button>
-
-      <button onclick="saveMovement()">
-        Guardar
-      </button>
-
+      <button class="secondary" onclick="closeModal()">Cancelar</button>
+      <button onclick="saveMovement()">Guardar</button>
     </div>
 
   </div>
 
 </div>
-
-
-<!-- CONFIGURACIÓN -->
 
 <div class="modal" id="settings">
 
   <div class="sheet">
 
-    <h2>
-      Configuración inicial
-    </h2>
+    <h2>Configuración inicial</h2>
 
     <p class="small">
-      La app empieza el 1 de octubre de 2026.
-      Introduce el saldo que tengas ese día y tus gastos fijos.
-      No necesitas introducir datos bancarios sensibles.
+      La app empieza el 1 de octubre de 2026. Introduce el saldo que tengas ese día y tus gastos fijos. No necesitas introducir datos bancarios sensibles.
     </p>
 
-    <label>
-      Saldo inicial (1 de octubre)
-    </label>
+    <label>Saldo inicial (1 de octubre)</label>
+    <input id="initialBalance" type="number" step="0.01">
 
-    <input
-      id="initialBalance"
-      type="number"
-      step="0.01"
-    >
-
-    <div class="section-title">
-      Gastos fijos
-    </div>
+    <div class="section-title">Gastos fijos</div>
 
     <div id="fixedEditor"></div>
 
-    <button
-      class="secondary"
-      onclick="addFixed()"
-    >
-      ＋ Añadir gasto fijo
-    </button>
+    <button class="secondary" onclick="addFixed()">＋ Añadir gasto fijo</button>
 
     <div class="actions">
-
-      <button
-        class="secondary"
-        onclick="closeSettings()"
-      >
-        Cancelar
-      </button>
-
-      <button onclick="saveSettings()">
-        Guardar
-      </button>
-
+      <button class="secondary" onclick="closeSettings()">Cancelar</button>
+      <button onclick="saveSettings()">Guardar</button>
     </div>
 
   </div>
 
 </div>
 
-
 <script>
 
 const KEY="miPresupuesto_v1";
-
 const START_DATE="2026-10-01";
 
-
-let data=JSON.parse(
-  localStorage.getItem(KEY)||"null"
-)||{
-
+let data=JSON.parse(localStorage.getItem(KEY)||'null')||{
   initialBalance:0,
-
   fixed:[
-    {
-      name:"Renta",
-      amount:1100,
-      day:1
-    },
-
-    {
-      name:"Teléfono",
-      amount:40,
-      day:5
-    }
+    {name:"Renta",amount:1100,day:1},
+    {name:"Teléfono",amount:40,day:5}
   ],
-
   transactions:[]
-
 };
 
-
 let modalType="expense";
-
 
 const expenseCats=[
   "Renta",
@@ -611,7 +209,6 @@ const expenseCats=[
   "Otros"
 ];
 
-
 const incomeCats=[
   "Trabajo",
   "Ingreso extra",
@@ -619,227 +216,134 @@ const incomeCats=[
   "Otro"
 ];
 
-
 function money(n){
-
-  return new Intl.NumberFormat(
-    "en-US",
-    {
-      style:"currency",
-      currency:"USD"
-    }
-  ).format(n||0);
-
+  return new Intl.NumberFormat('en-US',{
+    style:'currency',
+    currency:'USD'
+  }).format(n||0);
 }
-
 
 function iso(d){
-
   return d.toISOString().slice(0,10);
-
 }
-
 
 function parse(s){
-
-  return new Date(
-    s+"T12:00:00"
-  );
-
+  return new Date(s+"T12:00:00");
 }
-
 
 function monthKey(s){
-
   return s.slice(0,7);
-
 }
-
 
 function save(){
-
-  localStorage.setItem(
-    KEY,
-    JSON.stringify(data)
-  );
-
+  localStorage.setItem(KEY,JSON.stringify(data));
 }
-
 
 function today(){
-
   return iso(new Date());
-
 }
-
-
-/*
-  RENDER PRINCIPAL
-*/
 
 function render(){
 
   /*
-    Elimina cualquier ahorro automático
-    que hubiera creado la versión anterior.
+    Elimina cualquier ahorro automático de $200
+    que pudiera haber quedado guardado de la versión anterior.
   */
-
-  data.transactions=
-    (data.transactions||[])
-    .filter(
-      x=>!x.autoSaving
-    );
-
+  data.transactions=(data.transactions||[]).filter(
+    x=>!x.autoSaving
+  );
 
   let now=today();
 
+  document.getElementById("today").textContent=
+    new Intl.DateTimeFormat('es-US',{
+      dateStyle:'long'
+    }).format(new Date());
+
   let tx=data.transactions;
-
   let m=monthKey(now);
-
-
-  document.getElementById(
-    "today"
-  ).textContent=
-    new Intl.DateTimeFormat(
-      "es-US",
-      {
-        dateStyle:"long"
-      }
-    ).format(new Date());
-
 
   /*
     INGRESOS DEL MES
   */
-
-  let inc=
-    tx
-    .filter(
-      x=>
-        x.type==="income" &&
-        x.category!=="Retiro de ahorro" &&
-        monthKey(x.date)===m
+  let inc=tx
+    .filter(x=>
+      x.type==="income" &&
+      monthKey(x.date)===m &&
+      x.category!=="Retiro de ahorro"
     )
-    .reduce(
-      (a,x)=>a+x.amount,
-      0
-    );
-
+    .reduce((a,x)=>a+x.amount,0);
 
   /*
     GASTOS DEL MES
-
-    Ahorro NO cuenta como gasto.
-    Retiro de ahorro tampoco cuenta como ingreso.
+    El ahorro NO cuenta como gasto.
   */
-
-  let exp=
-    tx
-    .filter(
-      x=>
-        x.type==="expense" &&
-        x.category!=="Ahorro" &&
-        monthKey(x.date)===m
+  let exp=tx
+    .filter(x=>
+      x.type==="expense" &&
+      x.category!=="Ahorro" &&
+      monthKey(x.date)===m
     )
-    .reduce(
-      (a,x)=>a+x.amount,
-      0
-    );
-
+    .reduce((a,x)=>a+x.amount,0);
 
   /*
-    BOLSILLO DE AHORRO
+    BOLSILLO AHORRO
   */
-
-  let savedIn=
-    tx
-    .filter(
-      x=>
-        x.type==="expense" &&
-        x.category==="Ahorro"
+  let savedIn=tx
+    .filter(x=>
+      x.category==="Ahorro" &&
+      x.type==="expense"
     )
-    .reduce(
-      (a,x)=>a+x.amount,
-      0
-    );
+    .reduce((a,x)=>a+x.amount,0);
 
-
-  let savedOut=
-    tx
-    .filter(
-      x=>
-        x.type==="income" &&
-        x.category==="Retiro de ahorro"
+  let savedOut=tx
+    .filter(x=>
+      x.category==="Retiro de ahorro" &&
+      x.type==="income"
     )
-    .reduce(
-      (a,x)=>a+x.amount,
-      0
-    );
+    .reduce((a,x)=>a+x.amount,0);
 
+  let savedTotal=Math.max(
+    0,
+    savedIn-savedOut
+  );
 
-  let savedTotal=
-    Math.max(
-      0,
-      savedIn-savedOut
-    );
-
-
-  let savedMonthIn=
-    tx
-    .filter(
-      x=>
-        x.type==="expense" &&
-        x.category==="Ahorro" &&
-        monthKey(x.date)===m
+  /*
+    AHORRO DE ESTE MES
+  */
+  let savedMonthIn=tx
+    .filter(x=>
+      x.category==="Ahorro" &&
+      x.type==="expense" &&
+      monthKey(x.date)===m
     )
-    .reduce(
-      (a,x)=>a+x.amount,
-      0
-    );
+    .reduce((a,x)=>a+x.amount,0);
 
-
-  let savedMonthOut=
-    tx
-    .filter(
-      x=>
-        x.type==="income" &&
-        x.category==="Retiro de ahorro" &&
-        monthKey(x.date)===m
+  let savedMonthOut=tx
+    .filter(x=>
+      x.category==="Retiro de ahorro" &&
+      x.type==="income" &&
+      monthKey(x.date)===m
     )
-    .reduce(
-      (a,x)=>a+x.amount,
-      0
-    );
+    .reduce((a,x)=>a+x.amount,0);
 
+  let savedMonth=Math.max(
+    0,
+    savedMonthIn-savedMonthOut
+  );
 
-  let savedMonth=
-    Math.max(
-      0,
-      savedMonthIn-savedMonthOut
-    );
-
-
-  document.getElementById(
-    "savedTotal"
-  ).textContent=
+  document.getElementById("savedTotal").textContent=
     money(savedTotal);
 
-
-  document.getElementById(
-    "savedMonth"
-  ).textContent=
+  document.getElementById("savedMonth").textContent=
     money(savedMonth);
-
 
   /*
     SALDO DISPONIBLE
 
-    El ahorro está separado en el bolsillo.
-    Por eso se resta del dinero disponible,
-    pero NO aparece como gasto.
+    El ahorro se descuenta del saldo,
+    pero NO se registra como gasto.
   */
-
   let balance;
 
   if(now<START_DATE){
@@ -848,307 +352,197 @@ function render(){
 
   }else{
 
-    let normalTransactions=
-      tx
-      .filter(
-        x=>
-          x.category!=="Ahorro" &&
-          x.category!=="Retiro de ahorro"
-      )
-      .reduce(
-        (a,x)=>
-          a+
-          (
-            x.type==="income"
-              ? x.amount
-              : -x.amount
-          ),
-        0
-      );
-
-
     balance=
       data.initialBalance+
-      normalTransactions-
-      savedTotal;
 
+      tx
+        .filter(x=>
+          x.category!=="Ahorro" &&
+          x.category!=="Retiro de ahorro"
+        )
+        .reduce(
+          (a,x)=>
+            a+(x.type==="income"
+              ?x.amount
+              :-x.amount),
+          0
+        )
+
+      -savedTotal;
   }
 
-
-  document.getElementById(
-    "balance"
-  ).textContent=
+  document.getElementById("balance").textContent=
     money(balance);
 
-
-  document.getElementById(
-    "income"
-  ).textContent=
+  document.getElementById("income").textContent=
     money(inc);
 
-
-  document.getElementById(
-    "expense"
-  ).textContent=
+  document.getElementById("expense").textContent=
     money(exp);
 
-
   /*
-    ESTA SEMANA
+    SEMANA
   */
 
   let d=new Date();
-
   let day=d.getDay();
 
-  let friday=
-    new Date(d);
-
+  let friday=new Date(d);
   friday.setDate(
-    d.getDate()-
-    ((day+2)%7)
+    d.getDate()-((day+2)%7)
   );
 
-
-  let thursday=
-    new Date(friday);
-
+  let thursday=new Date(friday);
   thursday.setDate(
     friday.getDate()+6
   );
 
-
-  document.getElementById(
-    "weekRange"
-  ).textContent=
+  document.getElementById("weekRange").textContent=
     friday.toLocaleDateString(
-      "es-US",
-      {
-        month:"short",
-        day:"numeric"
-      }
+      'es-US',
+      {month:'short',day:'numeric'}
     )
     +" – "+
     thursday.toLocaleDateString(
-      "es-US",
-      {
-        month:"short",
-        day:"numeric"
-      }
+      'es-US',
+      {month:'short',day:'numeric'}
     );
-
 
   /*
-    Ahorro NO aparece como gasto semanal.
+    GASTOS DE LA SEMANA
+    El ahorro NO cuenta.
   */
-
-  let weekExp=
-    tx
-    .filter(
-      x=>
-        x.type==="expense" &&
-        x.category!=="Ahorro" &&
-        parse(x.date)>=friday &&
-        parse(x.date)<=thursday
+  let weekExp=tx
+    .filter(x=>
+      x.type==="expense" &&
+      x.category!=="Ahorro" &&
+      parse(x.date)>=friday &&
+      parse(x.date)<=thursday
     )
-    .reduce(
-      (a,x)=>a+x.amount,
-      0
-    );
-
+    .reduce((a,x)=>a+x.amount,0);
 
   /*
     GASTOS FIJOS
   */
+  let fixedTotal=data.fixed.reduce(
+    (a,x)=>a+x.amount,
+    0
+  );
 
-  let reserved=
-    data.fixed.reduce(
-      (a,x)=>a+x.amount,
-      0
-    );
+  let available=Math.max(
+    0,
+    balance-fixedTotal
+  );
 
+  let remaining=Math.max(
+    1,
+    Math.ceil(
+      (thursday-d)/(86400000)
+    )+1
+  );
 
-  /*
-    DINERO QUE REALMENTE PUEDE GASTARSE
-  */
+  document.getElementById("daily").textContent=
+    money(available/remaining);
 
-  let available=
-    Math.max(
-      0,
-      balance-reserved
-    );
-
-
-  let remaining=
-    Math.max(
-      1,
-      Math.ceil(
-        (thursday-d)/
-        86400000
-      )+1
-    );
-
-
-  document.getElementById(
-    "daily"
-  ).textContent=
-    money(
-      available/remaining
-    );
-
-
-  document.getElementById(
-    "forecast"
-  ).textContent=
-    `Gastos de esta semana: ${money(weekExp)} · Gastos fijos reservados: ${money(reserved)}`;
-
+  document.getElementById("forecast").textContent=
+    `Gastos de esta semana: ${money(weekExp)} · Gastos fijos reservados: ${money(fixedTotal)}`;
 
   /*
     PRÓXIMOS COMPROMISOS
   */
-
-  let fl=
-    document.getElementById(
-      "fixedList"
-    );
-
+  let fl=document.getElementById("fixedList");
 
   fl.innerHTML=
     data.fixed.length
 
-      ?
+    ?
 
-      data.fixed
-      .map(
-        x=>
-          `<div class="row">
-            <span>
-              🏦 ${x.name}<br>
-              <span class="small">
-                Día ${x.day}
-              </span>
-            </span>
+    data.fixed.map(x=>
+      `<div class="row">
+        <span>
+          🏦 ${x.name}
+          <br>
+          <span class="small">
+            Día ${x.day}
+          </span>
+        </span>
 
-            <b>
-              ${money(x.amount)}
-            </b>
+        <b>${money(x.amount)}</b>
+      </div>`
+    ).join("")
 
-          </div>`
-      )
-      .join("")
+    :
 
-      :
-
-      `<div class="empty">
-        No has añadido gastos fijos.
-      </div>`;
-
+    '<div class="empty">No has añadido gastos fijos.</div>';
 
   /*
     MOVIMIENTOS RECIENTES
   */
-
-  let recent=
-    [...tx]
-    .sort(
-      (a,b)=>
-        b.date.localeCompare(a.date)
+  let recent=[...tx]
+    .sort((a,b)=>
+      b.date.localeCompare(a.date)
     )
-    .slice(
-      0,
-      8
-    );
+    .slice(0,8);
 
-
-  document.getElementById(
-    "transactions"
-  ).innerHTML=
+  document.getElementById("transactions").innerHTML=
 
     recent.length
 
-      ?
+    ?
 
-      recent
-      .map(
-        x=>
-          `<div class="row">
+    recent.map(x=>
+      `<div class="row">
 
-            <span>
+        <span>
+          ${x.type==="income"?"💵":"💸"}
+          ${x.category}
 
-              ${x.type==="income"?"💵":"💸"}
-              ${x.category}
+          <br>
 
-              <br>
+          <span class="small">
+            ${x.date}
+            ${x.desc?" · "+x.desc:""}
+          </span>
+        </span>
 
-              <span class="small">
-                ${x.date}
-                ${x.desc?" · "+x.desc:""}
-              </span>
+        <b class="${x.type==="income"?"green":"red"}">
+          ${x.type==="income"?"+":"−"}${money(x.amount)}
+        </b>
 
-            </span>
+      </div>`
+    ).join("")
 
-            <b
-              class="${x.type==="income"?"green":"red"}"
-            >
-              ${x.type==="income"?"+":"−"}
-              ${money(x.amount)}
-            </b>
+    :
 
-          </div>`
-      )
-      .join("")
-
-      :
-
-      `<div class="empty">
-        Aún no hay movimientos.
-      </div>`;
-
+    '<div class="empty">Aún no hay movimientos.</div>';
 }
 
 
 /*
-  RETIRAR DINERO DEL BOLSILLO
+  RETIRAR AHORRO
 */
-
 function withdrawSavings(){
 
-  const tx=
-    data.transactions||[];
+  const tx=data.transactions||[];
 
-
-  const savedIn=
-    tx
-    .filter(
-      x=>
-        x.category==="Ahorro" &&
-        x.type==="expense"
+  const savedIn=tx
+    .filter(x=>
+      x.category==="Ahorro" &&
+      x.type==="expense"
     )
-    .reduce(
-      (a,x)=>a+x.amount,
-      0
-    );
+    .reduce((a,x)=>a+x.amount,0);
 
-
-  const savedOut=
-    tx
-    .filter(
-      x=>
-        x.category==="Retiro de ahorro" &&
-        x.type==="income"
+  const savedOut=tx
+    .filter(x=>
+      x.category==="Retiro de ahorro" &&
+      x.type==="income"
     )
-    .reduce(
-      (a,x)=>a+x.amount,
-      0
-    );
+    .reduce((a,x)=>a+x.amount,0);
 
-
-  const currentSavings=
-    Math.max(
-      0,
-      savedIn-savedOut
-    );
-
+  const currentSavings=Math.max(
+    0,
+    savedIn-savedOut
+  );
 
   if(currentSavings<=0){
 
@@ -1157,37 +551,25 @@ function withdrawSavings(){
     );
 
     return;
-
   }
 
+  const raw=prompt(
+    `Tienes ${money(currentSavings)} ahorrados. ¿Cuánto quieres retirar?`
+  );
 
-  const raw=
-    prompt(
-      `Tienes ${money(currentSavings)} en tu bolsillo de ahorro. ¿Cuánto quieres retirar?`
-    );
+  if(raw===null)return;
 
-
-  if(raw===null)
-    return;
-
-
-  const amount=
-    Number(raw);
-
+  const amount=Number(raw);
 
   if(
     !Number.isFinite(amount) ||
     amount<=0
   ){
 
-    alert(
-      "Introduce un monto válido."
-    );
+    alert("Introduce un monto válido.");
 
     return;
-
   }
-
 
   if(amount>currentSavings){
 
@@ -1196,381 +578,231 @@ function withdrawSavings(){
     );
 
     return;
-
   }
-
 
   data.transactions.push({
 
-    id:
-      "saving-withdrawal-"+
-      Date.now(),
+    id:"saving-withdrawal-"+Date.now(),
 
-    type:
-      "income",
+    type:"income",
 
-    amount:
+    amount:amount,
 
-      amount,
+    category:"Retiro de ahorro",
 
-    category:
-      "Retiro de ahorro",
+    date:today(),
 
-    date:
-      today(),
-
-    desc:
-      "Retiro de ahorro"
+    desc:"Retiro de ahorro"
 
   });
-
 
   save();
 
   render();
-
 }
 
 
 /*
   ABRIR MOVIMIENTO
 */
-
 function openModal(type){
 
   modalType=type;
 
+  document.getElementById("modal").style.display="flex";
 
-  document.getElementById(
-    "modal"
-  ).style.display="flex";
-
-
-  document.getElementById(
-    "modalTitle"
-  ).textContent=
+  document.getElementById("modalTitle").textContent=
     type==="income"
       ?"Registrar ingreso"
       :"Registrar gasto";
 
-
-  document.getElementById(
-    "category"
-  ).innerHTML=
-
-    (
-      type==="income"
-        ?incomeCats
-        :expenseCats
+  document.getElementById("category").innerHTML=
+    (type==="income"
+      ?incomeCats
+      :expenseCats
     )
-    .map(
-      x=>
-        `<option>
-          ${x}
-        </option>`
-    )
+    .map(x=>`<option>${x}</option>`)
     .join("");
 
-
-  document.getElementById(
-    "date"
-  ).value=
+  document.getElementById("date").value=
     today();
 
+  document.getElementById("amount").value="";
 
-  document.getElementById(
-    "amount"
-  ).value="";
-
-
-  document.getElementById(
-    "desc"
-  ).value="";
-
+  document.getElementById("desc").value="";
 }
-
-
-/*
-  CERRAR MOVIMIENTO
-*/
 
 function closeModal(){
 
-  document.getElementById(
-    "modal"
-  ).style.display="none";
-
+  document.getElementById("modal").style.display=
+    "none";
 }
 
 
 /*
   GUARDAR MOVIMIENTO
 */
-
 function saveMovement(){
 
-  let amount=
-    Number(
-      document.getElementById(
-        "amount"
-      ).value
-    );
-
+  let amount=Number(
+    document.getElementById("amount").value
+  );
 
   if(!amount){
 
-    alert(
-      "Introduce un monto."
-    );
+    alert("Introduce un monto.");
 
     return;
-
   }
-
 
   data.transactions.push({
 
-    id:
-      Date.now(),
+    id:Date.now(),
 
-    type:
-      modalType,
+    type:modalType,
 
-    amount:
-      amount,
+    amount:amount,
 
     category:
-      document.getElementById(
-        "category"
-      ).value.trim(),
+      document.getElementById("category").value,
 
     date:
-      document.getElementById(
-        "date"
-      ).value,
+      document.getElementById("date").value,
 
     desc:
-      document.getElementById(
-        "desc"
-      ).value.trim()
+      document.getElementById("desc").value.trim()
 
   });
-
 
   save();
 
   closeModal();
 
   render();
-
 }
 
 
 /*
   CONFIGURACIÓN
 */
-
 function openSettings(){
 
-  document.getElementById(
-    "settings"
-  ).style.display="flex";
+  document.getElementById("settings").style.display=
+    "flex";
 
-
-  document.getElementById(
-    "initialBalance"
-  ).value=
+  document.getElementById("initialBalance").value=
     data.initialBalance||0;
 
-
   renderFixedEditor();
-
 }
-
 
 function closeSettings(){
 
-  document.getElementById(
-    "settings"
-  ).style.display="none";
-
+  document.getElementById("settings").style.display=
+    "none";
 }
-
-
-/*
-  EDITAR GASTOS FIJOS
-*/
 
 function renderFixedEditor(){
 
-  document.getElementById(
-    "fixedEditor"
-  ).innerHTML=
+  document.getElementById("fixedEditor").innerHTML=
+    data.fixed.map((x,i)=>
 
-    data.fixed
-    .map(
-      (x,i)=>
+      `<div class="fixed-editor-row">
 
-        `<div
-          class="fixed-editor-row"
+        <input
+          data-i="${i}"
+          class="fn"
+          value="${x.name}"
+          placeholder="Nombre"
         >
 
-          <input
-            data-i="${i}"
-            class="fn"
-            value="${x.name}"
-            placeholder="Nombre"
-          >
+        <input
+          data-i="${i}"
+          class="fa"
+          type="number"
+          step="0.01"
+          value="${x.amount}"
+        >
 
-          <input
-            data-i="${i}"
-            class="fa"
-            type="number"
-            step="0.01"
-            value="${x.amount}"
-          >
+        <input
+          data-i="${i}"
+          class="fd"
+          type="number"
+          min="1"
+          max="31"
+          value="${x.day}"
+        >
 
-          <input
-            data-i="${i}"
-            class="fd"
-            type="number"
-            min="1"
-            max="31"
-            value="${x.day}"
-          >
+        <button
+          class="secondary"
+          onclick="removeFixed(${i})"
+        >
+          Eliminar
+        </button>
 
-          <button
-            class="secondary"
-            onclick="removeFixed(${i})"
-          >
-            Eliminar
-          </button>
+      </div>`
 
-        </div>`
-    )
-    .join("");
-
+    ).join("");
 }
-
 
 function addFixed(){
 
   data.fixed.push({
-
-    name:
-      "Nuevo gasto",
-
-    amount:
-      0,
-
-    day:
-      1
-
+    name:"Nuevo gasto",
+    amount:0,
+    day:1
   });
 
-
   renderFixedEditor();
-
 }
-
 
 function removeFixed(i){
 
-  data.fixed.splice(
-    i,
-    1
-  );
-
+  data.fixed.splice(i,1);
 
   renderFixedEditor();
-
 }
-
-
-/*
-  GUARDAR CONFIGURACIÓN
-*/
 
 function saveSettings(){
 
   data.initialBalance=
     Number(
-      document.getElementById(
-        "initialBalance"
-      ).value
+      document.getElementById("initialBalance").value
     )||0;
 
+  [...document.querySelectorAll(".fn")]
+    .forEach((e,i)=>{
 
-  [
-    ...document.querySelectorAll(
-      ".fn"
-    )
-  ]
-  .forEach(
-    (e,i)=>{
-
-      if(data.fixed[i]){
-
+      if(data.fixed[i])
         data.fixed[i].name=
-          e.value||
-          "Gasto fijo";
+          e.value||"Gasto fijo";
 
-      }
+    });
 
-    }
-  );
+  [...document.querySelectorAll(".fa")]
+    .forEach((e,i)=>{
 
-
-  [
-    ...document.querySelectorAll(
-      ".fa"
-    )
-  ]
-  .forEach(
-    (e,i)=>{
-
-      if(data.fixed[i]){
-
+      if(data.fixed[i])
         data.fixed[i].amount=
           Number(e.value)||0;
 
-      }
+    });
 
-    }
-  );
+  [...document.querySelectorAll(".fd")]
+    .forEach((e,i)=>{
 
-
-  [
-    ...document.querySelectorAll(
-      ".fd"
-    )
-  ]
-  .forEach(
-    (e,i)=>{
-
-      if(data.fixed[i]){
-
+      if(data.fixed[i])
         data.fixed[i].day=
           Number(e.value)||1;
 
-      }
-
-    }
-  );
-
+    });
 
   save();
 
   closeSettings();
 
   render();
-
 }
-
-
-/*
-  INICIAR APP
-*/
 
 render();
 
