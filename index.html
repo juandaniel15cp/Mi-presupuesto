@@ -259,22 +259,39 @@ input,select{
     <button class="secondary" onclick="openSettings()">⚙️</button>
   </div>
 
+
+  <!-- SALDO PRINCIPAL -->
+
   <div class="card hero">
 
-    <div class="label">Saldo calculado</div>
+    <div class="label">
+      Saldo disponible
+    </div>
 
-    <div class="balance" id="balance">$0.00</div>
+    <div class="balance" id="balance">
+      $0.00
+    </div>
 
     <div class="grid">
 
       <div>
-        <div class="label">Ingresos del mes</div>
-        <div class="value" id="income">$0.00</div>
+        <div class="label">
+          Ingresos del mes
+        </div>
+
+        <div class="value" id="income">
+          $0.00
+        </div>
       </div>
 
       <div>
-        <div class="label">Gastos del mes</div>
-        <div class="value" id="expense">$0.00</div>
+        <div class="label">
+          Gastos del mes
+        </div>
+
+        <div class="value" id="expense">
+          $0.00
+        </div>
       </div>
 
     </div>
@@ -292,6 +309,9 @@ input,select{
     </div>
 
   </div>
+
+
+  <!-- ESTA SEMANA -->
 
   <div class="card">
 
@@ -331,10 +351,13 @@ input,select{
 
   </div>
 
+
+  <!-- BOLSILLO DE AHORRO -->
+
   <div class="card">
 
     <div class="section-title">
-      Ahorro acumulado
+      Bolsillo ahorro
     </div>
 
     <div class="grid">
@@ -342,7 +365,7 @@ input,select{
       <div class="mini">
 
         <div class="label">
-          Acumulado
+          Disponible
         </div>
 
         <div class="value green" id="savedTotal">
@@ -365,19 +388,21 @@ input,select{
 
     </div>
 
-    <p class="small" id="savingProgress">
-      Meta mensual: $200.00
-    </p>
-
     <div class="actions">
 
-      <button class="secondary" onclick="withdrawSavings()">
+      <button
+        class="secondary"
+        onclick="withdrawSavings()"
+      >
         ↩ Retirar ahorro
       </button>
 
     </div>
 
   </div>
+
+
+  <!-- GASTOS FIJOS -->
 
   <div class="card">
 
@@ -388,6 +413,9 @@ input,select{
     <div id="fixedList"></div>
 
   </div>
+
+
+  <!-- MOVIMIENTOS -->
 
   <div class="card">
 
@@ -401,11 +429,17 @@ input,select{
 
 </div>
 
+
 <div class="nav">
+
   <span>
     🏠 Inicio · Los datos se guardan en este dispositivo
   </span>
+
 </div>
+
+
+<!-- MODAL MOVIMIENTO -->
 
 <div class="modal" id="modal">
 
@@ -415,7 +449,9 @@ input,select{
       Nuevo movimiento
     </h2>
 
-    <label>Monto</label>
+    <label>
+      Monto
+    </label>
 
     <input
       id="amount"
@@ -425,18 +461,24 @@ input,select{
       placeholder="0.00"
     >
 
-    <label>Categoría</label>
+    <label>
+      Categoría
+    </label>
 
     <select id="category"></select>
 
-    <label>Fecha</label>
+    <label>
+      Fecha
+    </label>
 
     <input
       id="date"
       type="date"
     >
 
-    <label>Descripción</label>
+    <label>
+      Descripción
+    </label>
 
     <input
       id="desc"
@@ -462,6 +504,9 @@ input,select{
 
 </div>
 
+
+<!-- CONFIGURACIÓN -->
+
 <div class="modal" id="settings">
 
   <div class="sheet">
@@ -482,16 +527,6 @@ input,select{
 
     <input
       id="initialBalance"
-      type="number"
-      step="0.01"
-    >
-
-    <label>
-      Meta de ahorro mensual
-    </label>
-
-    <input
-      id="savingGoal"
       type="number"
       step="0.01"
     >
@@ -528,33 +563,41 @@ input,select{
 
 </div>
 
+
 <script>
 
 const KEY="miPresupuesto_v1";
 
 const START_DATE="2026-10-01";
 
+
 let data=JSON.parse(
-  localStorage.getItem(KEY)||'null'
+  localStorage.getItem(KEY)||"null"
 )||{
+
   initialBalance:0,
-  savingGoal:200,
+
   fixed:[
     {
       name:"Renta",
       amount:1100,
       day:1
     },
+
     {
       name:"Teléfono",
       amount:40,
       day:5
     }
   ],
+
   transactions:[]
+
 };
 
+
 let modalType="expense";
+
 
 const expenseCats=[
   "Renta",
@@ -568,6 +611,7 @@ const expenseCats=[
   "Otros"
 ];
 
+
 const incomeCats=[
   "Trabajo",
   "Ingreso extra",
@@ -575,17 +619,19 @@ const incomeCats=[
   "Otro"
 ];
 
+
 function money(n){
 
   return new Intl.NumberFormat(
-    'en-US',
+    "en-US",
     {
-      style:'currency',
-      currency:'USD'
+      style:"currency",
+      currency:"USD"
     }
   ).format(n||0);
 
 }
+
 
 function iso(d){
 
@@ -593,17 +639,22 @@ function iso(d){
 
 }
 
+
 function parse(s){
 
-  return new Date(s+"T12:00:00");
+  return new Date(
+    s+"T12:00:00"
+  );
 
 }
+
 
 function monthKey(s){
 
   return s.slice(0,7);
 
 }
+
 
 function save(){
 
@@ -614,79 +665,60 @@ function save(){
 
 }
 
+
 function today(){
 
-  let d=new Date();
-
-  return iso(d);
+  return iso(new Date());
 
 }
 
-function ensureMonthlySaving(){
 
-  const now=today();
-
-  if(
-    now < START_DATE ||
-    !(Number(data.savingGoal)>0)
-  ) return;
-
-  const currentMonth=monthKey(now);
-
-  const alreadySaved=data.transactions.some(
-    x =>
-      x.type==="expense" &&
-      x.category==="Ahorro" &&
-      monthKey(x.date)===currentMonth &&
-      x.autoSaving===true
-  );
-
-  if(!alreadySaved){
-
-    data.transactions.push({
-
-      id:"auto-saving-"+currentMonth,
-
-      type:"expense",
-
-      amount:Number(data.savingGoal),
-
-      category:"Ahorro",
-
-      date:currentMonth+"-01",
-
-      desc:"Ahorro mensual automático",
-
-      autoSaving:true
-
-    });
-
-    save();
-
-  }
-
-}
+/*
+  RENDER PRINCIPAL
+*/
 
 function render(){
 
-  ensureMonthlySaving();
+  /*
+    Elimina cualquier ahorro automático
+    que hubiera creado la versión anterior.
+  */
+
+  data.transactions=
+    (data.transactions||[])
+    .filter(
+      x=>!x.autoSaving
+    );
+
 
   let now=today();
-
-  document.getElementById("today").textContent=
-    new Intl.DateTimeFormat(
-      'es-US',
-      {dateStyle:'long'}
-    ).format(new Date());
 
   let tx=data.transactions;
 
   let m=monthKey(now);
 
-  let inc=tx
+
+  document.getElementById(
+    "today"
+  ).textContent=
+    new Intl.DateTimeFormat(
+      "es-US",
+      {
+        dateStyle:"long"
+      }
+    ).format(new Date());
+
+
+  /*
+    INGRESOS DEL MES
+  */
+
+  let inc=
+    tx
     .filter(
-      x =>
+      x=>
         x.type==="income" &&
+        x.category!=="Retiro de ahorro" &&
         monthKey(x.date)===m
     )
     .reduce(
@@ -694,15 +726,18 @@ function render(){
       0
     );
 
+
   /*
-    IMPORTANTE:
-    Los movimientos de categoría "Ahorro"
-    NO cuentan como gastos del mes.
+    GASTOS DEL MES
+
+    Ahorro NO cuenta como gasto.
+    Retiro de ahorro tampoco cuenta como ingreso.
   */
 
-  let exp=tx
+  let exp=
+    tx
     .filter(
-      x =>
+      x=>
         x.type==="expense" &&
         x.category!=="Ahorro" &&
         monthKey(x.date)===m
@@ -712,50 +747,50 @@ function render(){
       0
     );
 
-  let savedIn=tx
-    .filter(
-      x =>
-        x.category==="Ahorro" &&
-        x.type==="expense"
-    )
-    .reduce(
-      (a,x)=>a+x.amount,
-      0
-    );
 
-  let savedOut=tx
-    .filter(
-      x =>
-        x.category==="Retiro de ahorro" &&
-        x.type==="income"
-    )
-    .reduce(
-      (a,x)=>a+x.amount,
-      0
-    );
+  /*
+    BOLSILLO DE AHORRO
+  */
 
-  let savedTotal=Math.max(
-    0,
-    savedIn-savedOut
-  );
-
-  let savedMonthIn=tx
+  let savedIn=
+    tx
     .filter(
-      x =>
-        x.category==="Ahorro" &&
+      x=>
         x.type==="expense" &&
-        monthKey(x.date)===m
+        x.category==="Ahorro"
     )
     .reduce(
       (a,x)=>a+x.amount,
       0
     );
 
-  let savedMonthOut=tx
+
+  let savedOut=
+    tx
     .filter(
-      x =>
-        x.category==="Retiro de ahorro" &&
+      x=>
         x.type==="income" &&
+        x.category==="Retiro de ahorro"
+    )
+    .reduce(
+      (a,x)=>a+x.amount,
+      0
+    );
+
+
+  let savedTotal=
+    Math.max(
+      0,
+      savedIn-savedOut
+    );
+
+
+  let savedMonthIn=
+    tx
+    .filter(
+      x=>
+        x.type==="expense" &&
+        x.category==="Ahorro" &&
         monthKey(x.date)===m
     )
     .reduce(
@@ -763,35 +798,64 @@ function render(){
       0
     );
 
-  let savedMonth=Math.max(
-    0,
-    savedMonthIn-savedMonthOut
-  );
+
+  let savedMonthOut=
+    tx
+    .filter(
+      x=>
+        x.type==="income" &&
+        x.category==="Retiro de ahorro" &&
+        monthKey(x.date)===m
+    )
+    .reduce(
+      (a,x)=>a+x.amount,
+      0
+    );
+
+
+  let savedMonth=
+    Math.max(
+      0,
+      savedMonthIn-savedMonthOut
+    );
+
 
   document.getElementById(
     "savedTotal"
-  ).textContent=money(savedTotal);
+  ).textContent=
+    money(savedTotal);
+
 
   document.getElementById(
     "savedMonth"
-  ).textContent=money(savedMonth);
-
-  document.getElementById(
-    "savingProgress"
   ).textContent=
-    `Meta mensual: ${money(data.savingGoal)} · Acumulado: ${money(savedTotal)}`;
+    money(savedMonth);
+
+
+  /*
+    SALDO DISPONIBLE
+
+    El ahorro está separado en el bolsillo.
+    Por eso se resta del dinero disponible,
+    pero NO aparece como gasto.
+  */
 
   let balance;
 
-  if(now < START_DATE){
+  if(now<START_DATE){
 
     balance=0;
 
   }else{
 
-    balance=
-      data.initialBalance+
-      tx.reduce(
+    let normalTransactions=
+      tx
+      .filter(
+        x=>
+          x.category!=="Ahorro" &&
+          x.category!=="Retiro de ahorro"
+      )
+      .reduce(
         (a,x)=>
           a+
           (
@@ -802,64 +866,86 @@ function render(){
         0
       );
 
+
+    balance=
+      data.initialBalance+
+      normalTransactions-
+      savedTotal;
+
   }
+
 
   document.getElementById(
     "balance"
-  ).textContent=money(balance);
+  ).textContent=
+    money(balance);
+
 
   document.getElementById(
     "income"
-  ).textContent=money(inc);
+  ).textContent=
+    money(inc);
+
 
   document.getElementById(
     "expense"
-  ).textContent=money(exp);
+  ).textContent=
+    money(exp);
+
+
+  /*
+    ESTA SEMANA
+  */
 
   let d=new Date();
 
   let day=d.getDay();
 
-  let friday=new Date(d);
+  let friday=
+    new Date(d);
 
   friday.setDate(
-    d.getDate()-((day+2)%7)
+    d.getDate()-
+    ((day+2)%7)
   );
 
-  let thursday=new Date(friday);
+
+  let thursday=
+    new Date(friday);
 
   thursday.setDate(
     friday.getDate()+6
   );
 
+
   document.getElementById(
     "weekRange"
   ).textContent=
     friday.toLocaleDateString(
-      'es-US',
+      "es-US",
       {
-        month:'short',
-        day:'numeric'
+        month:"short",
+        day:"numeric"
       }
     )
     +" – "+
     thursday.toLocaleDateString(
-      'es-US',
+      "es-US",
       {
-        month:'short',
-        day:'numeric'
+        month:"short",
+        day:"numeric"
       }
     );
 
+
   /*
-    IMPORTANTE:
-    El ahorro tampoco cuenta como
-    gasto de esta semana.
+    Ahorro NO aparece como gasto semanal.
   */
 
-  let weekExp=tx
+  let weekExp=
+    tx
     .filter(
-      x =>
+      x=>
         x.type==="expense" &&
         x.category!=="Ahorro" &&
         parse(x.date)>=friday &&
@@ -870,44 +956,71 @@ function render(){
       0
     );
 
+
+  /*
+    GASTOS FIJOS
+  */
+
   let reserved=
     data.fixed.reduce(
       (a,x)=>a+x.amount,
       0
     );
 
-  let available=Math.max(
-    0,
-    balance-reserved
-  );
 
-  let remaining=Math.max(
-    1,
-    Math.ceil(
-      (thursday-d)/(86400000)
-    )+1
-  );
+  /*
+    DINERO QUE REALMENTE PUEDE GASTARSE
+  */
+
+  let available=
+    Math.max(
+      0,
+      balance-reserved
+    );
+
+
+  let remaining=
+    Math.max(
+      1,
+      Math.ceil(
+        (thursday-d)/
+        86400000
+      )+1
+    );
+
 
   document.getElementById(
     "daily"
   ).textContent=
-    money(available/remaining);
+    money(
+      available/remaining
+    );
+
 
   document.getElementById(
     "forecast"
   ).textContent=
-    `Gastos de esta semana: ${money(weekExp)} · Gastos fijos reservados: ${money(data.fixed.reduce((a,x)=>a+x.amount,0))} · Ahorro objetivo: ${money(data.savingGoal)}`;
+    `Gastos de esta semana: ${money(weekExp)} · Gastos fijos reservados: ${money(reserved)}`;
+
+
+  /*
+    PRÓXIMOS COMPROMISOS
+  */
 
   let fl=
     document.getElementById(
       "fixedList"
     );
 
+
   fl.innerHTML=
     data.fixed.length
+
       ?
-      data.fixed.map(
-        x =>
+
+      data.fixed
+      .map(
+        x=>
           `<div class="row">
             <span>
               🏦 ${x.name}<br>
@@ -915,52 +1028,99 @@ function render(){
                 Día ${x.day}
               </span>
             </span>
-            <b>${money(x.amount)}</b>
-          </div>`
-      ).join("")
-      :
-      '<div class="empty">No has añadido gastos fijos.</div>';
 
-  let recent=[
-    ...tx
-  ]
+            <b>
+              ${money(x.amount)}
+            </b>
+
+          </div>`
+      )
+      .join("")
+
+      :
+
+      `<div class="empty">
+        No has añadido gastos fijos.
+      </div>`;
+
+
+  /*
+    MOVIMIENTOS RECIENTES
+  */
+
+  let recent=
+    [...tx]
     .sort(
       (a,b)=>
         b.date.localeCompare(a.date)
     )
-    .slice(0,8);
+    .slice(
+      0,
+      8
+    );
+
 
   document.getElementById(
     "transactions"
   ).innerHTML=
+
     recent.length
+
       ?
-      recent.map(
-        x =>
+
+      recent
+      .map(
+        x=>
           `<div class="row">
+
             <span>
-              ${x.type==="income"?"💵":"💸"} ${x.category}<br>
+
+              ${x.type==="income"?"💵":"💸"}
+              ${x.category}
+
+              <br>
+
               <span class="small">
-                ${x.date}${x.desc?" · "+x.desc:""}
+                ${x.date}
+                ${x.desc?" · "+x.desc:""}
               </span>
+
             </span>
-            <b class="${x.type==="income"?"green":"red"}">
-              ${x.type==="income"?"+":"−"}${money(x.amount)}
+
+            <b
+              class="${x.type==="income"?"green":"red"}"
+            >
+              ${x.type==="income"?"+":"−"}
+              ${money(x.amount)}
             </b>
+
           </div>`
-      ).join("")
+      )
+      .join("")
+
       :
-      '<div class="empty">Aún no hay movimientos.</div>';
+
+      `<div class="empty">
+        Aún no hay movimientos.
+      </div>`;
 
 }
 
+
+/*
+  RETIRAR DINERO DEL BOLSILLO
+*/
+
 function withdrawSavings(){
 
-  const tx=data.transactions||[];
+  const tx=
+    data.transactions||[];
 
-  const savedIn=tx
+
+  const savedIn=
+    tx
     .filter(
-      x =>
+      x=>
         x.category==="Ahorro" &&
         x.type==="expense"
     )
@@ -969,9 +1129,11 @@ function withdrawSavings(){
       0
     );
 
-  const savedOut=tx
+
+  const savedOut=
+    tx
     .filter(
-      x =>
+      x=>
         x.category==="Retiro de ahorro" &&
         x.type==="income"
     )
@@ -980,10 +1142,13 @@ function withdrawSavings(){
       0
     );
 
-  const currentSavings=Math.max(
-    0,
-    savedIn-savedOut
-  );
+
+  const currentSavings=
+    Math.max(
+      0,
+      savedIn-savedOut
+    );
+
 
   if(currentSavings<=0){
 
@@ -995,13 +1160,20 @@ function withdrawSavings(){
 
   }
 
-  const raw=prompt(
-    `Tienes ${money(currentSavings)} ahorrados. ¿Cuánto quieres retirar?`
-  );
 
-  if(raw===null) return;
+  const raw=
+    prompt(
+      `Tienes ${money(currentSavings)} en tu bolsillo de ahorro. ¿Cuánto quieres retirar?`
+    );
 
-  const amount=Number(raw);
+
+  if(raw===null)
+    return;
+
+
+  const amount=
+    Number(raw);
+
 
   if(
     !Number.isFinite(amount) ||
@@ -1016,6 +1188,7 @@ function withdrawSavings(){
 
   }
 
+
   if(amount>currentSavings){
 
     alert(
@@ -1026,21 +1199,31 @@ function withdrawSavings(){
 
   }
 
+
   data.transactions.push({
 
-    id:"saving-withdrawal-"+Date.now(),
+    id:
+      "saving-withdrawal-"+
+      Date.now(),
 
-    type:"income",
+    type:
+      "income",
 
-    amount,
+    amount:
 
-    category:"Retiro de ahorro",
+      amount,
 
-    date:today(),
+    category:
+      "Retiro de ahorro",
 
-    desc:"Retiro de ahorro"
+    date:
+      today(),
+
+    desc:
+      "Retiro de ahorro"
 
   });
+
 
   save();
 
@@ -1048,13 +1231,20 @@ function withdrawSavings(){
 
 }
 
+
+/*
+  ABRIR MOVIMIENTO
+*/
+
 function openModal(type){
 
   modalType=type;
 
+
   document.getElementById(
     "modal"
   ).style.display="flex";
+
 
   document.getElementById(
     "modalTitle"
@@ -1063,32 +1253,46 @@ function openModal(type){
       ?"Registrar ingreso"
       :"Registrar gasto";
 
+
   document.getElementById(
     "category"
   ).innerHTML=
+
     (
       type==="income"
         ?incomeCats
         :expenseCats
     )
     .map(
-      x=>`<option>${x}</option>`
+      x=>
+        `<option>
+          ${x}
+        </option>`
     )
     .join("");
 
+
   document.getElementById(
     "date"
-  ).value=today();
+  ).value=
+    today();
+
 
   document.getElementById(
     "amount"
   ).value="";
+
 
   document.getElementById(
     "desc"
   ).value="";
 
 }
+
+
+/*
+  CERRAR MOVIMIENTO
+*/
 
 function closeModal(){
 
@@ -1098,31 +1302,47 @@ function closeModal(){
 
 }
 
+
+/*
+  GUARDAR MOVIMIENTO
+*/
+
 function saveMovement(){
 
-  let amount=Number(
-    document.getElementById(
-      "amount"
-    ).value
-  );
+  let amount=
+    Number(
+      document.getElementById(
+        "amount"
+      ).value
+    );
 
-  if(!amount)
-    return alert(
+
+  if(!amount){
+
+    alert(
       "Introduce un monto."
     );
 
+    return;
+
+  }
+
+
   data.transactions.push({
 
-    id:Date.now(),
+    id:
+      Date.now(),
 
-    type:modalType,
+    type:
+      modalType,
 
-    amount,
+    amount:
+      amount,
 
     category:
       document.getElementById(
         "category"
-      ).value,
+      ).value.trim(),
 
     date:
       document.getElementById(
@@ -1136,6 +1356,7 @@ function saveMovement(){
 
   });
 
+
   save();
 
   closeModal();
@@ -1144,23 +1365,28 @@ function saveMovement(){
 
 }
 
+
+/*
+  CONFIGURACIÓN
+*/
+
 function openSettings(){
 
   document.getElementById(
     "settings"
   ).style.display="flex";
 
-  document.getElementById(
-    "initialBalance"
-  ).value=data.initialBalance||0;
 
   document.getElementById(
-    "savingGoal"
-  ).value=data.savingGoal||200;
+    "initialBalance"
+  ).value=
+    data.initialBalance||0;
+
 
   renderFixedEditor();
 
 }
+
 
 function closeSettings(){
 
@@ -1170,14 +1396,25 @@ function closeSettings(){
 
 }
 
+
+/*
+  EDITAR GASTOS FIJOS
+*/
+
 function renderFixedEditor(){
 
   document.getElementById(
     "fixedEditor"
   ).innerHTML=
-    data.fixed.map(
+
+    data.fixed
+    .map(
       (x,i)=>
-        `<div class="fixed-editor-row">
+
+        `<div
+          class="fixed-editor-row"
+        >
+
           <input
             data-i="${i}"
             class="fn"
@@ -1215,21 +1452,27 @@ function renderFixedEditor(){
 
 }
 
+
 function addFixed(){
 
   data.fixed.push({
 
-    name:"Nuevo gasto",
+    name:
+      "Nuevo gasto",
 
-    amount:0,
+    amount:
+      0,
 
-    day:1
+    day:
+      1
 
   });
+
 
   renderFixedEditor();
 
 }
+
 
 function removeFixed(i){
 
@@ -1238,9 +1481,15 @@ function removeFixed(i){
     1
   );
 
+
   renderFixedEditor();
 
 }
+
+
+/*
+  GUARDAR CONFIGURACIÓN
+*/
 
 function saveSettings(){
 
@@ -1251,42 +1500,64 @@ function saveSettings(){
       ).value
     )||0;
 
-  data.savingGoal=
-    Number(
-      document.getElementById(
-        "savingGoal"
-      ).value
-    )||0;
 
   [
-    ...document.querySelectorAll(".fn")
-  ].forEach(
+    ...document.querySelectorAll(
+      ".fn"
+    )
+  ]
+  .forEach(
     (e,i)=>{
-      if(data.fixed[i])
+
+      if(data.fixed[i]){
+
         data.fixed[i].name=
-          e.value||"Gasto fijo";
+          e.value||
+          "Gasto fijo";
+
+      }
+
     }
   );
 
+
   [
-    ...document.querySelectorAll(".fa")
-  ].forEach(
+    ...document.querySelectorAll(
+      ".fa"
+    )
+  ]
+  .forEach(
     (e,i)=>{
-      if(data.fixed[i])
+
+      if(data.fixed[i]){
+
         data.fixed[i].amount=
           Number(e.value)||0;
+
+      }
+
     }
   );
 
+
   [
-    ...document.querySelectorAll(".fd")
-  ].forEach(
+    ...document.querySelectorAll(
+      ".fd"
+    )
+  ]
+  .forEach(
     (e,i)=>{
-      if(data.fixed[i])
+
+      if(data.fixed[i]){
+
         data.fixed[i].day=
           Number(e.value)||1;
+
+      }
+
     }
   );
+
 
   save();
 
@@ -1295,6 +1566,11 @@ function saveSettings(){
   render();
 
 }
+
+
+/*
+  INICIAR APP
+*/
 
 render();
 
